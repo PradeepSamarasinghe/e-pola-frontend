@@ -1,0 +1,25 @@
+{
+  "auth": {
+    "loginTitle": "e-pola වෙත සාදරයෙන් පිළිගනිමු",
+    "loginSubtitle": "ආරම්භ කිරීමට ඔබේ දුරකථන අංකය ඇතුළත් කරන්න",
+    "phonePlaceholder": "+94 7X XXX XXXX",
+    "sendOtp": "OTP යවන්න",
+    "invalidPhone": "කරුණාකර වලංගු ශ්‍රී ලාංකීය දුරකථන අංකයක් ඇතුළත් කරන්න (+94...)"
+  },
+  "checkout": {
+    "title": "මුදල් ගෙවීම",
+    "deliveryAddress": "බෙදාහැරීමේ ලිපිනය",
+    "houseNumber": "නිවාස / ඒකක අංකය",
+    "street": "වීදිය",
+    "city": "නගරය",
+    "postalCode": "තැපැල් කේතය",
+    "placeOrder": "ඇණවුම තහවුරු කරන්න",
+    "fillAllFields": "කරුණාකර සියලු ලිපින ක්ෂේත්‍ර පුරවන්න"
+  },
+  "profile": {
+    "language": "භාෂාව",
+    "english": "English",
+    "sinhala": "සිංහල",
+    "tamil": "தமிழ்"
+  }
+}

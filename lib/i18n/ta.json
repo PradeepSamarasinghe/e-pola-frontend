@@ -1,0 +1,25 @@
+{
+  "auth": {
+    "loginTitle": "e-pola க்கு நல்வரவு",
+    "loginSubtitle": "தொடங்க உங்கள் தொலைபேசி எண்ணை உள்ளிடவும்",
+    "phonePlaceholder": "+94 7X XXX XXXX",
+    "sendOtp": "OTP ஐ அனுப்பவும்",
+    "invalidPhone": "சரியான இலங்கை தொலைபேசி எண்ணை உள்ளிடவும் (+94...)"
+  },
+  "checkout": {
+    "title": "வெளியேறு",
+    "deliveryAddress": "வழங்கல் முகவரி",
+    "houseNumber": "வீடு / அலகு எண்",
+    "street": "வீதி",
+    "city": "நகரம்",
+    "postalCode": "தபால் குறியீடு",
+    "placeOrder": "ஒழுங்கை வை",
+    "fillAllFields": "அனைத்து முகவரி புலங்களையும் நிரப்பவும்"
+  },
+  "profile": {
+    "language": "மொழி",
+    "english": "English",
+    "sinhala": "සිංහල",
+    "tamil": "தமிழ்"
+  }
+}

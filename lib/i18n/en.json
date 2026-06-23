@@ -1,0 +1,25 @@
+{
+  "auth": {
+    "loginTitle": "Welcome to e-pola",
+    "loginSubtitle": "Enter your phone number to get started",
+    "phonePlaceholder": "+94 7X XXX XXXX",
+    "sendOtp": "Send OTP",
+    "invalidPhone": "Please enter a valid Sri Lankan phone number (+94...)"
+  },
+  "checkout": {
+    "title": "Checkout",
+    "deliveryAddress": "Delivery Address",
+    "houseNumber": "House / Unit No.",
+    "street": "Street",
+    "city": "City",
+    "postalCode": "Postal Code",
+    "placeOrder": "Place Order",
+    "fillAllFields": "Please fill all address fields"
+  },
+  "profile": {
+    "language": "Language",
+    "english": "English",
+    "sinhala": "සිංහල",
+    "tamil": "தமிழ்"
+  }
+}
