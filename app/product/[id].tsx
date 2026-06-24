@@ -22,13 +22,6 @@ import { useWishlist } from '@/context/WishlistContext';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
-const THUMBNAIL_IMAGES = [
-  'https://images.pexels.com/photos/33783/olive-oil-salad-dressing-france-cuisine.jpg?auto=compress&cs=tinysrgb&w=100',
-  'https://images.pexels.com/photos/1537169/pexels-photo-1537169.jpeg?auto=compress&cs=tinysrgb&w=100',
-  'https://images.pexels.com/photos/1640772/pexels-photo-1640772.jpeg?auto=compress&cs=tinysrgb&w=100',
-  'https://images.pexels.com/photos/1213710/pexels-photo-1213710.jpeg?auto=compress&cs=tinysrgb&w=100',
-];
-
 export default function ProductDetailScreen() {
   const insets = useSafeAreaInsets();
   const { id } = useLocalSearchParams<{ id: string }>();
@@ -99,6 +92,10 @@ export default function ProductDetailScreen() {
     ? currentPrice * (1 - (product.discount_percentage ?? 0) / 100)
     : currentPrice;
 
+  const productImages = product.images && product.images.length > 0
+    ? product.images
+    : [product.image_url ?? product.image ?? 'https://via.placeholder.com/400'];
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       {/* Top bar */}
@@ -124,10 +121,7 @@ export default function ProductDetailScreen() {
         <View style={styles.mainImageWrapper}>
           <Image
             source={{
-              uri:
-                selectedThumb === 0 && product.image_url
-                  ? product.image_url
-                  : THUMBNAIL_IMAGES[Math.max(0, selectedThumb - 1)],
+              uri: productImages[selectedThumb] ?? productImages[0],
             }}
             style={styles.mainImage}
             resizeMode="cover"
@@ -140,21 +134,23 @@ export default function ProductDetailScreen() {
         </View>
 
         {/* Thumbnails */}
-        <View style={styles.thumbnails}>
-          {[product.image_url, ...THUMBNAIL_IMAGES.slice(0, 3)].map((uri, i) => (
-            <TouchableOpacity
-              key={i}
-              style={[styles.thumb, selectedThumb === i && styles.thumbActive]}
-              onPress={() => setSelectedThumb(i)}
-            >
-              <Image
-                source={{ uri: uri ?? THUMBNAIL_IMAGES[0] }}
-                style={styles.thumbImage}
-                resizeMode="cover"
-              />
-            </TouchableOpacity>
-          ))}
-        </View>
+        {productImages.length > 1 && (
+          <View style={styles.thumbnails}>
+            {productImages.map((uri, i) => (
+              <TouchableOpacity
+                key={i}
+                style={[styles.thumb, selectedThumb === i && styles.thumbActive]}
+                onPress={() => setSelectedThumb(i)}
+              >
+                <Image
+                  source={{ uri }}
+                  style={styles.thumbImage}
+                  resizeMode="cover"
+                />
+              </TouchableOpacity>
+            ))}
+          </View>
+        )}
 
         {/* Title + Price */}
         <View style={styles.titleRow}>

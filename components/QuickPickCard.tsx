@@ -31,6 +31,7 @@ const bgColors = [
 export default function QuickPickCard({ product, index = 0, onPress }: Props) {
   const { getQuantity } = useCart();
   const qty = getQuantity(product.id);
+  const displayImage = product.image_url || product.images?.[0] || product.image;
 
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.85}>
@@ -45,9 +46,9 @@ export default function QuickPickCard({ product, index = 0, onPress }: Props) {
           <Text style={styles.countBadgeText}>{qty}</Text>
         </View>
       )}
-      {product.image_url ? (
+      {displayImage ? (
         <Image
-          source={{ uri: product.image_url }}
+          source={{ uri: displayImage }}
           style={[styles.image, { backgroundColor: bgColors[index % bgColors.length] }]}
           resizeMode="contain"
         />

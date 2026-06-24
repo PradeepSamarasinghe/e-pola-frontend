@@ -27,6 +27,7 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { totalCount, addToCart } = useCart();
   const [quickPicks, setQuickPicks] = useState<Product[]>([]);
+  // const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [stores, setStores] = useState<Store[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,8 +37,9 @@ export default function HomeScreen() {
 
   async function loadData() {
     try {
-      const [picks, storeList] = await Promise.all([
+      const [picks, all, storeList] = await Promise.all([
         fetchProducts({ quick_pick: true }),
+        fetchProducts(),
         fetchStores(),
       ]);
       setQuickPicks(picks);
