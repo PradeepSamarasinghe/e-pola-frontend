@@ -6,18 +6,32 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
+import { ShoppingCart } from 'lucide-react-native';
 import { colors, radius, spacing, typography } from '@/constants/theme';
 import { Product } from '@/lib/api';
 import { useCart } from '@/context/CartContext';
 
 type Props = {
   product: Product;
+  index?: number;
   onPress?: () => void;
 };
 
-export default function QuickPickCard({ product, onPress }: Props) {
+const bgColors = [
+  '#FEE2E2', // pink
+  '#FEF08A', // yellow
+  '#FECACA', // red
+  '#BBF7D0', // green
+  '#E5E7EB', // grey
+  '#FEE2E2', // pink
+  '#FEF08A', // yellow
+  '#DBEAFE', // blue
+];
+
+export default function QuickPickCard({ product, index = 0, onPress }: Props) {
   const { getQuantity } = useCart();
   const qty = getQuantity(product.id);
+  const displayImage = product.image_url || product.images?.[0] || product.image;
 
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.85}>
@@ -28,17 +42,18 @@ export default function QuickPickCard({ product, onPress }: Props) {
       )}
       {qty > 0 && (
         <View style={styles.countBadge}>
+          <ShoppingCart size={10} color="#fff" />
           <Text style={styles.countBadgeText}>{qty}</Text>
         </View>
       )}
-      {product.image_url ? (
+      {displayImage ? (
         <Image
-          source={{ uri: product.image_url }}
-          style={styles.image}
-          resizeMode="cover"
+          source={{ uri: displayImage }}
+          style={[styles.image, { backgroundColor: bgColors[index % bgColors.length] }]}
+          resizeMode="contain"
         />
       ) : (
-        <View style={styles.imagePlaceholder} />
+        <View style={[styles.imagePlaceholder, { backgroundColor: bgColors[index % bgColors.length] }]} />
       )}
       <Text style={styles.name} numberOfLines={1}>
         {product.name}
@@ -70,15 +85,17 @@ const styles = StyleSheet.create({
   },
   countBadge: {
     position: 'absolute',
-    top: 0,
-    right: 0,
+    top: -4,
+    right: -4,
     backgroundColor: colors.text.primary,
     borderRadius: radius.full,
-    width: 18,
-    height: 18,
+    flexDirection: 'row',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
     alignItems: 'center',
     justifyContent: 'center',
     zIndex: 1,
+    gap: 2,
   },
   countBadgeText: {
     color: colors.text.white,

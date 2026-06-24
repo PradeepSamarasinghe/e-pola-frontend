@@ -27,6 +27,7 @@ export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { totalCount, addToCart } = useCart();
   const [quickPicks, setQuickPicks] = useState<Product[]>([]);
+  // const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [stores, setStores] = useState<Store[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -36,8 +37,9 @@ export default function HomeScreen() {
 
   async function loadData() {
     try {
-      const [picks, storeList] = await Promise.all([
+      const [picks, all, storeList] = await Promise.all([
         fetchProducts({ quick_pick: true }),
+        fetchProducts(),
         fetchStores(),
       ]);
       setQuickPicks(picks);
@@ -62,22 +64,21 @@ export default function HomeScreen() {
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
         >
-          {/* Search row */}
           <View style={styles.searchRow}>
             <TouchableOpacity
               style={styles.searchBar}
               onPress={() => router.push('/search')}
               activeOpacity={0.8}
             >
-              <Search size={16} color={colors.text.muted} />
+              <Search size={20} color="#000" />
               <Text style={styles.searchPlaceholder}>Search...</Text>
-              <SlidersHorizontal size={16} color={colors.text.muted} />
+              <SlidersHorizontal size={20} color="#000" />
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.cartBtn}
               onPress={() => router.push('/cart')}
             >
-              <ShoppingCart size={18} color={colors.text.white} />
+              <ShoppingCart size={20} color="#000" />
               <Text style={styles.cartCount}>{totalCount}</Text>
             </TouchableOpacity>
           </View>
@@ -87,9 +88,7 @@ export default function HomeScreen() {
 
           {/* Veggie strip */}
           <Image
-            source={{
-              uri: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=800',
-            }}
+            source={require('@/assets/images/hero.png')}
             style={styles.veggieStrip}
             resizeMode="cover"
           />
@@ -103,11 +102,13 @@ export default function HomeScreen() {
             <>
               <QuickPickRow
                 products={row1}
+                startIndex={0}
                 onProductPress={(p) => router.push(`/product/${p.id}`)}
                 onAdd={addToCart}
               />
               <QuickPickRow
                 products={row2}
+                startIndex={4}
                 onProductPress={(p) => router.push(`/product/${p.id}`)}
                 onAdd={addToCart}
               />
@@ -116,32 +117,22 @@ export default function HomeScreen() {
         </View>
 
         {/* Promo banner */}
-        <View style={styles.bannerContainer}>
-          <LinearGradient
-            colors={[colors.primaryDark, '#064E3B']}
-            style={styles.banner}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-          >
-            <View style={styles.bannerContent}>
-              <Text style={styles.bannerSub}>Healthy &amp; Fresh</Text>
-              <Text style={styles.bannerTitle}>VEGETABLE</Text>
-              <TouchableOpacity
-                style={styles.bannerBtn}
-                onPress={() => router.push('/search')}
-              >
-                <Text style={styles.bannerBtnText}>Order Now</Text>
-              </TouchableOpacity>
-            </View>
-            <Image
-              source={{
-                uri: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=400',
-              }}
-              style={styles.bannerImage}
-              resizeMode="cover"
-            />
-          </LinearGradient>
-        </View>
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.bannerContainer}
+        >
+          <Image
+            source={require('@/assets/images/first-banner.png')}
+            style={styles.bannerImageLocal}
+            resizeMode="cover"
+          />
+          <Image
+            source={require('@/assets/images/sec-banner.png')}
+            style={styles.bannerImageLocal}
+            resizeMode="cover"
+          />
+        </ScrollView>
 
         {/* Stores section */}
         <View style={[styles.section, styles.storesSection]}>
@@ -164,19 +155,22 @@ export default function HomeScreen() {
 
 function QuickPickRow({
   products,
+  startIndex,
   onProductPress,
   onAdd,
 }: {
   products: Product[];
+  startIndex: number;
   onProductPress: (p: Product) => void;
   onAdd: (p: Product) => void;
 }) {
   return (
     <View style={styles.quickRow}>
-      {products.map((product) => (
+      {products.map((product, i) => (
         <View key={product.id} style={styles.quickCell}>
           <QuickPickCard
             product={product}
+            index={startIndex + i}
             onPress={() => onProductPress(product)}
           />
         </View>
@@ -207,28 +201,28 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: colors.background,
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.full,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm + 2,
+    paddingVertical: spacing.sm + 4,
     gap: spacing.sm,
   },
   searchPlaceholder: {
     flex: 1,
     fontSize: typography.sizes.md,
-    color: colors.text.muted,
+    color: '#999',
   },
   cartBtn: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: '#FFFFFF',
     borderRadius: radius.full,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    paddingVertical: spacing.sm + 2,
     gap: spacing.xs,
   },
   cartCount: {
-    color: colors.text.white,
+    color: '#000000',
     fontSize: typography.sizes.md,
     fontWeight: typography.weights.bold,
   },
@@ -262,6 +256,13 @@ const styles = StyleSheet.create({
   bannerContainer: {
     paddingHorizontal: spacing.lg,
     paddingTop: spacing.md,
+    paddingBottom: spacing.lg,
+    gap: spacing.md,
+  },
+  bannerImageLocal: {
+    width: SCREEN_WIDTH - spacing.lg * 2,
+    height: 140,
+    borderRadius: radius.xl,
   },
   banner: {
     borderRadius: radius.xl,
